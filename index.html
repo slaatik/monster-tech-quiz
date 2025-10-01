@@ -1,207 +1,130 @@
 
 
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<title>Monster Tech – Phishing Fun Quiz</title>
-<style>
+    <meta charset="UTF-8">
+    <title>Monster Tech – Phishing Fun Quiz</title>
+    <style>
         body {
+            background-color: #cce6ff;
             font-family: Arial, sans-serif;
-            background-color: #1e1e2f;
-            color: #f0f0f0;
             padding: 20px;
-            max-width: 800px;
-            margin: auto;
+            color: #333;
         }
-        h1, h2 {
-            color: #ffa500;
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #666;
+        }
+        h1 {
             text-align: center;
+            color: #003366;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 150px;
         }
         .question {
             margin-bottom: 20px;
         }
         label {
             display: block;
-            margin: 5px 0;
+            margin-bottom: 5px;
         }
         select {
             width: 100%;
-            padding: 5px;
-            margin-top: 5px;
+            padding: 8px;
+            margin-bottom: 10px;
         }
-        button {
-            background-color: #ffa500;
-            color: #000;
+        #submitBtn {
+            background-color: #003366;
+            color: white;
             padding: 10px 20px;
             border: none;
             cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        #result {
+            margin-top: 20px;
             font-weight: bold;
-        }
-        button:hover {
-            background-color: #ffcc00;
-        }
-        img.logo {
-            display: block;
-            margin: 0 auto 20px auto;
-            max-width: 200px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-<img alt="St. Philip's College Logo" class="logo" src="Screenshot 2025-10-01 100604.png"/>
-<h1>Monster Tech – Phishing Fun Quiz</h1>
-<h2>Theme: Don’t get hooked by cyber monsters!</h2>
-<form id="quizForm">
-<div class="question">
-<label>1. A phishing email often tries to make you feel…</label>
-<select name="q1">
-<option value="">--Select--</option>
-<option value="b">Rushed or scared</option>
-<option value="a">Relaxed and safe</option>
-<option value="c">Hungry for pizza</option>
-</select>
-</div>
-<div class="question">
-<label>2. If an email says “Your account will be deleted in 10 minutes unless you click this link”, this is an example of:</label>
-<select name="q2">
-<option value="">--Select--</option>
-<option value="b">Social engineering</option>
-<option value="a">A normal security update</option>
-<option value="c">A friendly reminder</option>
-</select>
-</div>
-<div class="question">
-<label>3. Which of these is the safest way to verify if a link is legit?</label>
-<select name="q3">
-<option value="">--Select--</option>
-<option value="b">Hover over the link to preview the real URL</option>
-<option value="a">Click it fast before it disappears</option>
-<option value="c">Forward it to 20 friends</option>
-</select>
-</div>
-<div class="question">
-<label>4. From: IT Support – “Your password expired. Click here to reset immediately.”</label>
-<select name="q4">
-<option value="">--Select--</option>
-<option value="phish">PHISH</option>
-<option value="safe">SAFE</option>
-</select>
-</div>
-<div class="question">
-<label>5. From: Monster Tech Events – “Reminder: TechFest is October 15. Bring your student ID for free snacks.”</label>
-<select name="q5">
-<option value="">--Select--</option>
-<option value="safe">SAFE</option>
-<option value="phish">PHISH</option>
-</select>
-</div>
-<div class="question">
-<label>6. From: Unknown – “Congrats! You won a $1,000 gift card. Enter your bank info now.”</label>
-<select name="q6">
-<option value="">--Select--</option>
-<option value="phish">PHISH</option>
-<option value="safe">SAFE</option>
-</select>
-</div>
-<div class="question">
-<label>7. “Your grades will be deleted if you don’t act now!”</label>
-<select name="q7">
-<option value="">--Select--</option>
-<option value="fear">Fear Monster</option>
-<option value="greed">Greed Monster</option>
-<option value="curiosity">Curiosity Monster</option>
-</select>
-</div>
-<div class="question">
-<label>8. “Win a free iPhone just by clicking this link!”</label>
-<select name="q8">
-<option value="">--Select--</option>
-<option value="greed">Greed Monster</option>
-<option value="fear">Fear Monster</option>
-<option value="curiosity">Curiosity Monster</option>
-</select>
-</div>
-<div class="question">
-<label>9. “Click here to see secret pictures of the campus lab.”</label>
-<select name="q9">
-<option value="">--Select--</option>
-<option value="curiosity">Curiosity Monster</option>
-<option value="greed">Greed Monster</option>
-<option value="fear">Fear Monster</option>
-</select>
-</div>
-<div class="question">
-<label>10. What’s one way to report a phishing attempt at school?</label>
-<select name="q10">
-<option value="">--Select--</option>
-<option value="a">Tell a teacher or IT staff</option>
-<option value="b">Ignore it and hope it goes away</option>
-<option value="c">Reply to the email</option>
-</select>
-</div>
-<div class="question">
-<label>11. Why should you never use the same password everywhere?</label>
-<select name="q11">
-<option value="">--Select--</option>
-<option value="a">If one account is hacked, others are at risk</option>
-<option value="b">It’s easier to remember</option>
-<option value="c">It makes your account faster</option>
-</select>
-</div>
-<div class="question">
-<label>12. If you accidentally clicked a bad link, what’s the first thing you should do?</label>
-<select name="q12">
-<option value="">--Select--</option>
-<option value="a">Tell an adult or IT staff immediately</option>
-<option value="b">Click more links</option>
-<option value="c">Delete your computer</option>
-</select>
-</div>
-<button onclick="submitQuiz()" type="button">Submit</button>
-</form>
-<script>
-        const correctAnswers = {
-            q1: "b",
-            q2: "b",
-            q3: "b",
-            q4: "phish",
-            q5: "safe",
-            q6: "phish",
-            q7: "fear",
-            q8: "greed",
-            q9: "curiosity",
-            q10: "a",
-            q11: "a",
-            q12: "a"
-        };
+    <div class="container">
+        <img src="tiger_logo.png" alt="Tiger Mascot Logo" class="logo">
+        <h1>Monster Tech – Phishing Fun Quiz</h1>
+        <form id="quizForm">
+            <div class="question">
+                <label for="q1">1. A phishing email often tries to make you feel…</label>
+                <select id="q1">
+                    <option value="">--Select an answer--</option>
+                    <option value="a">Relaxed and safe</option>
+                    <option value="b">Rushed or scared</option>
+                    <option value="c">Hungry for pizza</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q2">2. Which of these is the safest way to verify if a link is legit?</label>
+                <select id="q2">
+                    <option value="">--Select an answer--</option>
+                    <option value="a">Click it fast before it disappears</option>
+                    <option value="b">Hover over the link to preview the real URL</option>
+                    <option value="c">Forward it to 20 friends</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q3">3. “Your account will be deleted in 10 minutes unless you click this link” is an example of:</label>
+                <select id="q3">
+                    <option value="">--Select an answer--</option>
+                    <option value="a">A normal security update</option>
+                    <option value="b">Social engineering</option>
+                    <option value="c">A friendly reminder</option>
+                </select>
+            </div>
+            <button type="button" id="submitBtn">Submit</button>
+        </form>
+        <div id="result"></div>
+    </div>
 
-        function submitQuiz() {
+    <script>
+        document.getElementById("submitBtn").addEventListener("click", function() {
+            const answers = {
+                q1: "b",
+                q2: "b",
+                q3: "b"
+            };
+
             let score = 0;
-            let total = Object.keys(correctAnswers).length;
-            for (let key in correctAnswers) {
-                let selected = document.forms["quizForm"][key].value;
-                if (selected === correctAnswers[key]) {
+            let total = Object.keys(answers).length;
+
+            for (let key in answers) {
+                let userAnswer = document.getElementById(key).value;
+                if (userAnswer === answers[key]) {
                     score++;
                 }
             }
-            showResult(score, total);
-        }
 
-        function showResult(score, total) {
-            const percentage = Math.round((score / total) * 100);
-            let message = "You scored " + score + " out of " + total + " (" + percentage + "%).\n";
+            let percentage = (score / total) * 100;
+            let resultDiv = document.getElementById("result");
+
             if (percentage >= 70) {
-                message += "🎉 Congratulations! You passed and can claim your giveaway!";
-                alert(message);
-                location.reload();
+                resultDiv.innerHTML = `🎉 You scored ${percentage}%. Great job!<br>Spin the Cyber Trivia Wheel in the new tab and come back to help a friend!`;
+                window.open("https://securityawareness.dcsa.mil/cdse/multimedia/games/cybertrivia/index.html", "_blank");
             } else {
-                message += "👻 Oops! You didn’t pass. The cyber monsters got you! No giveaway this time.";
-                alert(message);
-                location.reload();
+                resultDiv.innerHTML = `😢 You scored ${percentage}%. The cyber monsters got you! Retrying in 5 seconds...`;
+                setTimeout(() => {
+                    location.reload();
+                }, 5000);
             }
-        }
+        });
     </script>
 </body>
 </html>
