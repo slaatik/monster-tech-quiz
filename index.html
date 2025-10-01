@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monster Tech – Phishing Fun Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h2 { color: #2c3e50; }
+        .question { margin-bottom: 15px; }
+        select { width: 100%; padding: 5px; }
+        #result { font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>■ Monster Tech – Phishing Fun Quiz ■</h1>
+    <p><strong>Theme:</strong> Don’t get hooked by cyber monsters!</p>
+
+    <h2>Part 1 – Quick Bites</h2>
+    <div class="question">
+        1. A phishing email often tries to make you feel…
+        <select id="q1">
+            <option value="">--Choose--</option>
+            <option value="a">Relaxed and safe</option>
+            <option value="b">Rushed or scared</option>
+            <option value="c">Hungry for pizza</option>
+        </select>
+    </div>
+    <div class="question">
+        2. If an email says “Your account will be deleted in 10 minutes unless you click this link”, this is an example of:
+        <select id="q2">
+            <option value="">--Choose--</option>
+            <option value="a">A normal security update</option>
+            <option value="b">Social engineering</option>
+            <option value="c">A friendly reminder</option>
+        </select>
+    </div>
+    <div class="question">
+        3. Which of these is the safest way to verify if a link is legit?
+        <select id="q3">
+            <option value="">--Choose--</option>
+            <option value="a">Click it fast before it disappears</option>
+            <option value="b">Hover over the link to preview the real URL</option>
+            <option value="c">Forward it to 20 friends</option>
+        </select>
+    </div>
+
+    <h2>Part 2 – Spot the Hook</h2>
+    <div class="question">
+        1. “Your password expired. Click here to reset immediately.”
+        <select id="q4">
+            <option value="">--Choose--</option>
+            <option value="PHISH">PHISH</option>
+            <option value="SAFE">SAFE</option>
+        </select>
+    </div>
+    <div class="question">
+        2. “Reminder: TechFest is October 15. Bring your student ID for free snacks.”
+        <select id="q5">
+            <option value="">--Choose--</option>
+            <option value="PHISH">PHISH</option>
+            <option value="SAFE">SAFE</option>
+        </select>
+    </div>
+    <div class="question">
+        3. “Congrats! You won a $1,000 gift card. Enter your bank info now.”
+        <select id="q6">
+            <option value="">--Choose--</option>
+            <option value="PHISH">PHISH</option>
+            <option value="SAFE">SAFE</option>
+        </select>
+    </div>
+
+    <h2>Part 3 – Cyber Monster Match</h2>
+    <div class="question">
+        1. “Your grades will be deleted if you don’t act now!”
+        <select id="q7">
+            <option value="">--Choose--</option>
+            <option value="Fear Monster">Fear Monster</option>
+            <option value="Greed Monster">Greed Monster</option>
+            <option value="Curiosity Monster">Curiosity Monster</option>
+        </select>
+    </div>
+    <div class="question">
+        2. “Win a free iPhone just by clicking this link!”
+        <select id="q8">
+            <option value="">--Choose--</option>
+            <option value="Fear Monster">Fear Monster</option>
+            <option value="Greed Monster">Greed Monster</option>
+            <option value="Curiosity Monster">Curiosity Monster</option>
+        </select>
+    </div>
+    <div class="question">
+        3. “Click here to see secret pictures of the campus lab.”
+        <select id="q9">
+            <option value="">--Choose--</option>
+            <option value="Fear Monster">Fear Monster</option>
+            <option value="Greed Monster">Greed Monster</option>
+            <option value="Curiosity Monster">Curiosity Monster</option>
+        </select>
+    </div>
+
+    <button onclick="calculateScore()">Submit</button>
+    <div id="result"></div>
+
+    <script>
+        function calculateScore() {
+            const answers = {
+                q1: "b",
+                q2: "b",
+                q3: "b",
+                q4: "PHISH",
+                q5: "SAFE",
+                q6: "PHISH",
+                q7: "Fear Monster",
+                q8: "Greed Monster",
+                q9: "Curiosity Monster"
+            };
+            let score = 0;
+            let total = Object.keys(answers).length;
+
+            for (let key in answers) {
+                let userAnswer = document.getElementById(key).value;
+                if (userAnswer === answers[key]) {
+                    score += 1;
+                }
+            }
+
+            let percentage = (score / total) * 100;
+            let resultText = "Your score: " + score + "/" + total + " (" + percentage.toFixed(0) + "%)<br>";
+
+            if (percentage >= 70) {
+                resultText += "<strong>🎉 You passed! You're safe from the cyber monsters and can claim your giveaway!</strong>";
+            } else {
+                resultText += "<strong>👾 Oh no! The cyber monsters got you. You can't claim the giveaway this time!</strong>";
+            }
+
+            document.getElementById("result").innerHTML = resultText;
+        }
+    </script>
+</body>
+</html>
+
+
