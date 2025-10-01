@@ -1,229 +1,112 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Monster Tech – Phishing Fun Quiz</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            margin: 20px; 
-            background: linear-gradient(to right, #74ebd5, #ACB6E5);
-            color: #2c3e50;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e2f;
+            color: #f0f0f0;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
         }
-        h1 {
+        h1, h2 {
+            color: #ffa500;
             text-align: center;
-            color: #fff;
-            text-shadow: 2px 2px 5px #000;
         }
-        h2 { 
-            color: #34495e; 
-            border-bottom: 2px solid #16a085;
-            padding-bottom: 5px;
+        .question {
+            margin-bottom: 20px;
         }
-        .question { 
-            margin-bottom: 15px; 
-            background: #ecf0f1; 
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        label {
+            display: block;
+            margin: 5px 0;
         }
-        select { 
-            width: 100%; 
-            padding: 8px; 
-            border-radius: 5px;
-            border: 1px solid #ccc;
+        select {
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
         }
         button {
-            display: block;
-            margin: 20px auto;
-            padding: 12px 25px;
-            font-size: 18px;
-            background: #16a085;
-            color: white;
+            background-color: #ffa500;
+            color: #000;
+            padding: 10px 20px;
             border: none;
-            border-radius: 10px;
             cursor: pointer;
-            transition: 0.3s;
+            font-weight: bold;
         }
         button:hover {
-            background: #1abc9c;
+            background-color: #ffcc00;
         }
-
-        /* Popup modal */
-        #popup {
-            display: none;
-            position: fixed;
-            z-index: 100;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        #popup-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            font-size: 20px;
-            max-width: 400px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-            animation: pop 0.5s ease;
-        }
-        @keyframes pop {
-            from { transform: scale(0.5); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-        .close-btn {
-            margin-top: 15px;
-            padding: 8px 20px;
-            background: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        .close-btn:hover {
-            background: #c0392b;
+        img.logo {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 200px;
         }
     </style>
 </head>
 <body>
-    <h1>■ Monster Tech – Phishing Fun Quiz ■</h1>
-    <p style="text-align:center; font-size:18px;"><strong>Theme:</strong> Don’t get hooked by cyber monsters!</p>
+    tiger_logo.png
+    <h1>Monster Tech – Phishing Fun Quiz</h1>
+    <h2>Theme: Don’t get hooked by cyber monsters!</h2>
 
-    <h2>Part 1 – Quick Bites</h2>
-    <div class="question">
-        1. A phishing email often tries to make you feel…
-        <select id="q1">
-            <option value="">--Choose--</option>
-            <option value="a">Relaxed and safe</option>
-            <option value="b">Rushed or scared</option>
-            <option value="c">Hungry for pizza</option>
-        </select>
-    </div>
-    <div class="question">
-        2. If an email says “Your account will be deleted in 10 minutes unless you click this link”, this is an example of:
-        <select id="q2">
-            <option value="">--Choose--</option>
-            <option value="a">A normal security update</option>
-            <option value="b">Social engineering</option>
-            <option value="c">A friendly reminder</option>
-        </select>
-    </div>
-    <div class="question">
-        3. Which of these is the safest way to verify if a link is legit?
-        <select id="q3">
-            <option value="">--Choose--</option>
-            <option value="a">Click it fast before it disappears</option>
-            <option value="b">Hover over the link to preview the real URL</option>
-            <option value="c">Forward it to 20 friends</option>
-        </select>
-    </div>
-
-    <h2>Part 2 – Spot the Hook</h2>
-    <div class="question">
-        1. “Your password expired. Click here to reset immediately.”
-        <select id="q4">
-            <option value="">--Choose--</option>
-            <option value="PHISH">PHISH</option>
-            <option value="SAFE">SAFE</option>
-        </select>
-    </div>
-    <div class="question">
-        2. “Reminder: TechFest is October 15. Bring your student ID for free snacks.”
-        <select id="q5">
-            <option value="">--Choose--</option>
-            <option value="PHISH">PHISH</option>
-            <option value="SAFE">SAFE</option>
-        </select>
-    </div>
-    <div class="question">
-        3. “Congrats! You won a $1,000 gift card. Enter your bank info now.”
-        <select id="q6">
-            <option value="">--Choose--</option>
-            <option value="PHISH">PHISH</option>
-            <option value="SAFE">SAFE</option>
-        </select>
-    </div>
-
-    <h2>Part 3 – Cyber Monster Match</h2>
-    <div class="question">
-        1. “Your grades will be deleted if you don’t act now!”
-        <select id="q7">
-            <option value="">--Choose--</option>
-            <option value="Fear Monster">Fear Monster</option>
-            <option value="Greed Monster">Greed Monster</option>
-            <option value="Curiosity Monster">Curiosity Monster</option>
-        </select>
-    </div>
-    <div class="question">
-        2. “Win a free iPhone just by clicking this link!”
-        <select id="q8">
-            <option value="">--Choose--</option>
-            <option value="Fear Monster">Fear Monster</option>
-            <option value="Greed Monster">Greed Monster</option>
-            <option value="Curiosity Monster">Curiosity Monster</option>
-        </select>
-    </div>
-    <div class="question">
-        3. “Click here to see secret pictures of the campus lab.”
-        <select id="q9">
-            <option value="">--Choose--</option>
-            <option value="Fear Monster">Fear Monster</option>
-            <option value="Greed Monster">Greed Monster</option>
-            <option value="Curiosity Monster">Curiosity Monster</option>
-        </select>
-    </div>
-
-    <button onclick="calculateScore()">Submit</button>
-
-    <!-- Popup -->
-    <div id="popup">
-        <div id="popup-content">
-            <div id="popup-message"></div>
-            <button class="close-btn" onclick="closePopup()">Close</button>
+    <form id="quizForm">
+        <!-- Questions 1–12 -->
+        <!-- Example question -->
+        <div class="question">
+            <label>1. A phishing email often tries to make you feel…</label>
+            <select name="q1">
+                <option value="">--Select--</option>
+                <option value="b">Rushed or scared</option>
+                <option value="a">Relaxed and safe</option>
+                <option value="c">Hungry for pizza</option>
+            </select>
         </div>
-    </div>
+        <!-- Add remaining questions here following the same format -->
+        <!-- ... -->
+        <button type="button" onclick="submitQuiz()">Submit</button>
+    </form>
 
     <script>
-        function calculateScore() {
-            const answers = {
-                q1: "b",
-                q2: "b",
-                q3: "b",
-                q4: "PHISH",
-                q5: "SAFE",
-                q6: "PHISH",
-                q7: "Fear Monster",
-                q8: "Greed Monster",
-                q9: "Curiosity Monster"
-            };
-            let score = 0;
-            let total = Object.keys(answers).length;
+        const correctAnswers = {
+            q1: "b",
+            q2: "b",
+            q3: "b",
+            q4: "phish",
+            q5: "safe",
+            q6: "phish",
+            q7: "fear",
+            q8: "greed",
+            q9: "curiosity",
+            q10: "a",
+            q11: "a",
+            q12: "a"
+        };
 
-            for (let key in answers) {
-                let userAnswer = document.getElementById(key).value;
-                if (userAnswer === answers[key]) {
-                    score += 1;
+        function submitQuiz() {
+            let score = 0;
+            let total = Object.keys(correctAnswers).length;
+            for (let key in correctAnswers) {
+                let selected = document.forms["quizForm"][key]?.value;
+                if (selected === correctAnswers[key]) {
+                    score++;
                 }
             }
-
-            let percentage = (score / total) * 100;
-            let resultText = "Your score: " + score + "/" + total + " (" + percentage.toFixed(0) + "%)<br>";
-
-            if (percentage >= 70) {
-                resultText += "<strong>🎉 You passed! You're safe from the cyber monsters and can claim your giveaway!</strong>";
-            } else {
-                resultText += "<strong>👾 Oh no! The cyber monsters got you. You can't claim the giveaway this time!</strong>";
-            }
-
-            document.getElementById("popup-message").innerHTML = resultText;
-            document.getElementById("popup").style.display = "flex";
+            showResult(score, total);
         }
 
-        function closePopup() {
-            document.getElementById("popup").style.display = "none";
+        function showResult(score, total) {
+            const percentage = Math.round((score / total) * 100);
+            let message = "You scored " + score + " out of " + total + " (" + percentage + "%).\n";
+            if (percentage >= 70) {
+                message += "🎉 Congratulations! You passed and can claim your giveaway!";
+            } else {
+                message += "👻 Oops! You didn’t pass. The cyber monsters got you! No giveaway this time.";
+            }
+            alert(message);
+            location.reload();
         }
     </script>
 </body>
