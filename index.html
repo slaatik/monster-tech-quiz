@@ -7,95 +7,67 @@
     <title>Monster Tech – Phishing Fun Quiz</title>
     <style>
         body {
-            background-color: #cce6ff;
+            background-color: #1e1e2f;
+            color: #f0f0f0;
             font-family: Arial, sans-serif;
             padding: 20px;
-            color: #333;
         }
-        .container {
-            max-width: 700px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #666;
-        }
-        h1 {
-            text-align: center;
-            color: #003366;
-        }
-        .logo {
-            display: block;
-            margin: 0 auto 20px auto;
-            max-width: 150px;
+        h1, h2 {
+            color: #ffa500;
         }
         .question {
             margin-bottom: 20px;
         }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
         select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-        }
-        #submitBtn {
-            background-color: #003366;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
+            padding: 5px;
             font-size: 16px;
-            border-radius: 5px;
         }
         #result {
             margin-top: 20px;
+            font-size: 18px;
             font-weight: bold;
-            text-align: center;
+        }
+        #logo {
+            width: 120px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="tiger_logo.png" alt="Tiger Mascot Logo" class="logo">
-        <h1>Monster Tech – Phishing Fun Quiz</h1>
-        <form id="quizForm">
-            <div class="question">
-                <label for="q1">1. A phishing email often tries to make you feel…</label>
-                <select id="q1">
-                    <option value="">--Select an answer--</option>
-                    <option value="a">Relaxed and safe</option>
-                    <option value="b">Rushed or scared</option>
-                    <option value="c">Hungry for pizza</option>
-                </select>
-            </div>
-            <div class="question">
-                <label for="q2">2. Which of these is the safest way to verify if a link is legit?</label>
-                <select id="q2">
-                    <option value="">--Select an answer--</option>
-                    <option value="a">Click it fast before it disappears</option>
-                    <option value="b">Hover over the link to preview the real URL</option>
-                    <option value="c">Forward it to 20 friends</option>
-                </select>
-            </div>
-            <div class="question">
-                <label for="q3">3. “Your account will be deleted in 10 minutes unless you click this link” is an example of:</label>
-                <select id="q3">
-                    <option value="">--Select an answer--</option>
-                    <option value="a">A normal security update</option>
-                    <option value="b">Social engineering</option>
-                    <option value="c">A friendly reminder</option>
-                </select>
-            </div>
-            <button type="button" id="submitBtn">Submit</button>
-        </form>
-        <div id="result"></div>
+    <img id="logo" src="tiger_logo.png" alt="Tiger Mascot Logo">
+    <h1>🎃 Monster Tech – Phishing Fun Quiz 🐯</h1>
+    <div class="question">
+        <label>1. A phishing email often tries to make you feel...</label><br>
+        <select id="q1">
+            <option value="">--Choose an answer--</option>
+            <option value="a">Relaxed and safe</option>
+            <option value="b">Rushed or scared</option>
+            <option value="c">Hungry for pizza</option>
+        </select>
     </div>
+    <div class="question">
+        <label>2. Which of these is the safest way to verify if a link is legit?</label><br>
+        <select id="q2">
+            <option value="">--Choose an answer--</option>
+            <option value="a">Click it fast before it disappears</option>
+            <option value="b">Hover over the link to preview the real URL</option>
+            <option value="c">Forward it to 20 friends</option>
+        </select>
+    </div>
+    <div class="question">
+        <label>3. “Win a free iPhone just by clicking this link!” is an example of...</label><br>
+        <select id="q3">
+            <option value="">--Choose an answer--</option>
+            <option value="a">Curiosity Monster</option>
+            <option value="b">Greed Monster</option>
+            <option value="c">Fear Monster</option>
+        </select>
+    </div>
+    <button onclick="submitQuiz()">Submit</button>
+    <div id="result"></div>
 
     <script>
-        document.getElementById("submitBtn").addEventListener("click", function() {
+        function submitQuiz() {
             const answers = {
                 q1: "b",
                 q2: "b",
@@ -103,28 +75,28 @@
             };
 
             let score = 0;
-            let total = Object.keys(answers).length;
+            let total = 3;
 
-            for (let key in answers) {
-                let userAnswer = document.getElementById(key).value;
-                if (userAnswer === answers[key]) {
+            for (let i = 1; i <= total; i++) {
+                const userAnswer = document.getElementById("q" + i).value;
+                if (userAnswer === answers["q" + i]) {
                     score++;
                 }
             }
 
-            let percentage = (score / total) * 100;
-            let resultDiv = document.getElementById("result");
+            const percent = Math.round((score / total) * 100);
+            const resultDiv = document.getElementById("result");
 
-            if (percentage >= 70) {
-                resultDiv.innerHTML = `🎉 You scored ${percentage}%. Great job!<br>Spin the Cyber Trivia Wheel in the new tab and come back to help a friend!`;
+            if (percent >= 70) {
+                resultDiv.innerHTML = `🎉 You passed with ${percent}%! A new tab will open with the Cyber Trivia Wheel. When you're done, come back and help a friend!`;
                 window.open("https://securityawareness.dcsa.mil/cdse/multimedia/games/cybertrivia/index.html", "_blank");
             } else {
-                resultDiv.innerHTML = `😢 You scored ${percentage}%. The cyber monsters got you! Retrying in 5 seconds...`;
+                resultDiv.innerHTML = `😢 You scored ${percent}%. The cyber monsters got you this time! Retrying in 5 seconds...`;
                 setTimeout(() => {
                     location.reload();
                 }, 5000);
             }
-        });
+        }
     </script>
 </body>
 </html>
