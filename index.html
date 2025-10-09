@@ -1,182 +1,28 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Monster Tech – Phishing Fun Quiz</title>
-    <style>
-        body {
-            background-color: #000;
-            color: #FFA500;
-            font-family: 'Arial', sans-serif;
-            text-align: center;
-            padding: 20px;
-            animation: fadeIn 2s ease-in;
-        }
-        h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
-            animation: pulse 2s infinite;
-        }
-        img {
-            width: 120px;
-            margin-bottom: 20px;
-            animation: bounce 2s infinite;
-        }
-        .question, .trivia {
-            margin: 20px auto;
-            padding: 15px;
-            border: 2px solid #FFA500;
-            border-radius: 10px;
-            width: 80%;
-            background-color: #111;
-            animation: fadeInUp 1s ease-in;
-        }
-        select, button {
-            padding: 10px;
-            margin-top: 10px;
-            font-size: 1em;
-            border-radius: 5px;
-            border: none;
-        }
-        button {
-            background-color: #FFA500;
-            color: #000;
-            cursor: pointer;
-        }
-        #result, #trivia-section {
-            margin-top: 20px;
-            animation: fadeIn 1s ease-in;
-        }
-        @keyframes fadeIn {
-            from {opacity: 0;}
-            to {opacity: 1;}
-        }
-        @keyframes fadeInUp {
-            from {opacity: 0; transform: translateY(20px);}
-            to {opacity: 1; transform: translateY(0);}
-        }
-        @keyframes pulse {
-            0% {transform: scale(1);}
-            50% {transform: scale(1.05);}
-            100% {transform: scale(1);}
-        }
-        @keyframes bounce {
-            0%, 100% {transform: translateY(0);}
-            50% {transform: translateY(-10px);}
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cybersecurity Phishing Awareness Wheel</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <img src="tiger_logo.png" alt="Tiger Mascot Logo">
-    <h1>🎃 Monster Tech – Phishing Fun Quiz 🎃</h1>
+  <h1>🎡 Cybersecurity Phishing Awareness</h1>
+  <p class="subtitle">Spin the wheel and test your knowledge!</p>
 
-    <div id="quiz">
-        <div class="question">
-            <p>1. What is phishing?</p>
-            <select id="q1">
-                <option value="">Select an answer</option>
-                <option value="0">A way to catch fish online</option>
-                <option value="1">A cyber attack that tricks users into giving up sensitive info</option>
-                <option value="0">A secure login method</option>
-            </select>
-        </div>
-        <div class="question">
-            <p>2. What should you do if you receive a suspicious email?</p>
-            <select id="q2">
-                <option value="">Select an answer</option>
-                <option value="1">Report it to your IT department</option>
-                <option value="0">Click the link quickly</option>
-                <option value="0">Forward it to friends</option>
-            </select>
-        </div>
-        <div class="question">
-            <p>3. Why is it risky to use the same password everywhere?</p>
-            <select id="q3">
-                <option value="">Select an answer</option>
-                <option value="1">If one account is hacked, others are vulnerable</option>
-                <option value="0">It makes logging in faster</option>
-                <option value="0">It helps you remember passwords</option>
-            </select>
-        </div>
-        <button onclick="submitQuiz()">Submit</button>
+  <div class="wheel-container">
+    <canvas id="wheel" width="400" height="400"></canvas>
+    <button id="spinBtn">SPIN</button>
+  </div>
+
+  <div id="questionModal" class="modal hidden">
+    <div class="modal-content">
+      <h2 id="categoryTitle"></h2>
+      <div id="questionContainer"></div>
     </div>
+  </div>
 
-    <div id="result"></div>
-
-    <div id="trivia-section" style="display:none;">
-        <div class="trivia" id="trivia-question"></div>
-        <select id="trivia-options"></select><br>
-        <button onclick="revealAnswer()">Reveal Answer</button>
-        <div id="trivia-answer" style="margin-top:10px;"></div>
-        <button onclick="spinAgain()">Spin Again</button>
-        <button onclick="restartQuiz()">Finish</button>
-    </div>
-
-    <script>
-        const trivia = [
-            {
-                question: "Which of these is a strong password?",
-                options: ["123456", "password", "T!g3r#2023"],
-                answer: "T!g3r#2023"
-            },
-            {
-                question: "What does 2FA stand for?",
-                options: ["Two-Factor Authentication", "Two-Faced Attack", "Fast Access"],
-                answer: "Two-Factor Authentication"
-            },
-            {
-                question: "Which file type is most likely to carry malware?",
-                options: [".jpg", ".exe", ".txt"],
-                answer: ".exe"
-            },
-            {
-                question: "What should you do before clicking a link?",
-                options: ["Hover to preview URL", "Click quickly", "Ignore it"],
-                answer: "Hover to preview URL"
-            }
-        ];
-
-        function submitQuiz() {
-            let score = 0;
-            score += parseInt(document.getElementById("q1").value || 0);
-            score += parseInt(document.getElementById("q2").value || 0);
-            score += parseInt(document.getElementById("q3").value || 0);
-            let percent = (score / 3) * 100;
-            if (percent >= 70) {
-                document.getElementById("quiz").style.display = "none";
-                document.getElementById("result").innerHTML = `<h2>🎉 You passed with ${percent}%! Welcome to the Trivia Twirl!</h2>`;
-                document.getElementById("trivia-section").style.display = "block";
-                spinAgain();
-            } else {
-                document.getElementById("result").innerHTML = `<h2>😢 You scored ${percent}%. Try again in 5 seconds!</h2>`;
-                setTimeout(() => location.reload(), 5000);
-            }
-        }
-
-        function spinAgain() {
-            const t = trivia[Math.floor(Math.random() * trivia.length)];
-            document.getElementById("trivia-question").innerText = t.question;
-            document.getElementById("trivia-options").innerHTML = t.options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
-            document.getElementById("trivia-answer").innerText = "";
-            document.getElementById("trivia-answer").style.display = "none";
-            document.getElementById("trivia-answer").style.animation = "";
-        }
-
-        function revealAnswer() {
-            const selected = document.getElementById("trivia-options").value;
-            const currentQuestion = document.getElementById("trivia-question").innerText;
-            const correct = trivia.find(t => t.question === currentQuestion).answer;
-            const result = selected === correct ? "✅ Correct!" : `❌ Incorrect. The correct answer is: ${correct}`;
-            document.getElementById("trivia-answer").innerText = result;
-            document.getElementById("trivia-answer").style.display = "block";
-            document.getElementById("trivia-answer").style.animation = "fadeIn 1s ease-in";
-        }
-
-        function restartQuiz() {
-            location.reload();
-        }
-    </script>
+  <script src="questions.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
