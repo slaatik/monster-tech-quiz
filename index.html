@@ -1,42 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cybersecurity Phishing Awareness Wheel</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cybersecurity Phishing Awareness Game</title>
+<style>
+  body {
+    font-family: "Segoe UI", sans-serif;
+    background: radial-gradient(circle at top, #001f3f, #000);
+    color: #fff;
+    text-align: center;
+    overflow: hidden;
+  }
+  h1 { margin-top: 10px; font-size: 1.8rem; }
+  #wheel-container { position: relative; margin: 40px auto; width: 300px; height: 300px; }
+  #wheel {
+    width: 100%; height: 100%; border-radius: 50%;
+    border: 10px solid #fff; background: conic-gradient(
+      #ff4136 0deg 60deg, #0074D9 60deg 120deg, #2ECC40 120deg 180deg,
+      #FF851B 180deg 240deg, #B10DC9 240deg 300deg, #39CCCC 300deg 360deg);
+    transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+  #pointer {
+    position: absolute; top: -20px; left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 30px solid yellow;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse { 0%,100%{transform:translateX(-50%) scale(1);} 50%{transform:translateX(-50%) scale(1.2);} }
+
+  #spin-btn {
+    padding: 10px 20px; font-size: 1.2rem; border: none; border-radius: 10px;
+    background: #39CCCC; color: #000; cursor: pointer;
+  }
+  #question-area { margin-top: 30px; display: none; }
+  .question { margin: 10px auto; width: 80%; }
+  .option { display: block; margin: 5px auto; padding: 8px; width: 60%; border-radius: 8px; cursor: pointer; border: 1px solid #ccc; background: #111; color: #fff; }
+  .option:hover { background: #222; }
+  #timer { font-size: 1.5rem; margin-top: 10px; }
+  #result { font-size: 1.5rem; margin-top: 20px; }
+  #badge { display: none; margin: 20px auto; width: 200px; animation: bounce 2s infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+  #leaderboard { margin-top: 20px; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 10px; width: 300px; margin-left:auto; margin-right:auto; }
+  #leaderboard h2 { font-size: 1.2rem; margin-bottom: 5px; }
+  #leaderboard ul { list-style: none; padding: 0; margin: 0; }
+  #leaderboard li { font-size: 1rem; padding: 2px 0; }
+  input[type="text"] { padding: 8px; border-radius: 5px; border: none; width: 200px; }
+</style>
 </head>
 <body>
-  <h1>🎡 Cybersecurity Phishing Awareness</h1>
-  <p class="subtitle">Spin the wheel, test your skills, and earn your SPC Tigernaut Badge!</p>
+<h1>🎣 Cybersecurity Phishing Awareness Game</h1>
+<div id="leaderboard">
+  <h2>🏆 Leaderboard</h2>
+  <ul id="leaderboard-list"></ul>
+</div>
+<div id="player-setup">
+  <p>Enter your name before spinning:</p>
+  <input type="text" id="player-name" placeholder="Your name" />
+  <button id="start-btn">Start</button>
+</div>
 
-  <div id="leaderboard">
-    <h3>🏆 Leaderboard</h3>
-    <ul id="leaderboardList"></ul>
-  </div>
+<div id="wheel-container" style="display:none;">
+  <div id="pointer"></div>
+  <div id="wheel"></div>
+  <button id="spin-btn">🎡 Spin</button>
+</div>
 
-  <div class="wheel-container">
-    <div class="pointer"></div>
-    <canvas id="wheel" width="400" height="400"></canvas>
-    <button id="spinBtn">SPIN</button>
-  </div>
+<div id="question-area">
+  <div id="timer"></div>
+  <div id="question-text"></div>
+  <div id="options"></div>
+</div>
 
-  <div id="questionModal" class="modal hidden">
-    <div class="modal-content">
-      <h2 id="categoryTitle"></h2>
-      <div id="questionContainer"></div>
-    </div>
-  </div>
+<div id="result"></div>
+<img id="badge" src="badge.png" alt="Winner Badge" />
 
-  <div id="badgeModal" class="modal hidden">
-    <div class="modal-content badge-content">
-      <img id="badgeImage" src="assets/badge.png" alt="Cybersecurity Badge" />
-      <h2>🎉 Congratulations! 🎉</h2>
-      <p>You earned your Cybersecurity Badge! Claim your prize!</p>
-    </div>
-  </div>
+<!-- Audio -->
+<audio id="spin-sound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+<audio id="applause-sound" src="https://actions.google.com/sounds/v1/crowds/applause.ogg"></audio>
+<audio id="buzzer-sound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
 
-  <script src="questions.js"></script>
-  <script src="script.js"></script>
+<script>
+const wheel = document.getElementById('wheel');
+const spinBtn = document.getElementById('spin-btn');
+const questionArea = document.getElementById('question-area');
+const questionText = document.getElementById('question-text');
+const optionsDiv = document.getElementById('options');
+const timerDisplay = document.getElementById('timer');
+const result = document.getElementById('result');
+const badge = document.getElementById('badge');
+const playerSetup = document.getElementById('player-setup');
+const startBtn = document.getElementById('start-btn');
+const playerNameInput = document.getElementById('player-name');
+const leaderboardList = document.getElementById('leaderboard-list');
+let playerName = "";
+let retry = false;
+let countdown, timeLeft = 20;
+
+const spinSound = document.getElementById('spin-sound');
+const applauseSound = document.getElementById('applause-sound');
+const buzzerSound = document.getElementById('buzzer-sound');
+
+const categories = ["Phishing Emails", "Passwords", "Social Engineering", "Safe Browsing", "Malware"];
+const questionPool = {
+  "Phishing Emails": [
+    { q: "What is a common sign of a phishing email?", a: "Suspicious links" },
+    { q: "Phishing emails often ask for?", a: "Personal information" },
+    { q: "Should you click links from unknown senders?", a: "No" }
+  ],
+  "Passwords": [
+    { q: "What makes a strong password?", a: "Mix of letters, numbers, and symbols" },
+    { q: "Should you reuse passwords?", a: "No" },
+    { q: "What is a password manager?", a: "Tool to store and manage passwords" }
+  ],
+  "Social Engineering": [
+    { q: "Social engineering manipulates what?", a: "Human psychology" },
+    { q: "A scammer pretending to be IT is an example of?", a: "Pretexting" },
+    { q: "Should you share credentials with coworkers?", a: "No" }
+  ],
+  "Safe Browsing": [
+    { q: "What does HTTPS mean?", a: "Secure connection" },
+    { q: "Should you download from unknown sites?", a: "No" },
+    { q: "What helps block malicious sites?", a: "Browser security settings" }
+  ],
+  "Malware": [
+    { q: "Malware stands for?", a: "Malicious software" },
+    { q: "A virus spreads by?", a: "Infecting files" },
+    { q: "Best defense against malware?", a: "Updated antivirus" }
+  ]
+};
+
+startBtn.onclick = () => {
+  playerName = playerNameInput.value.trim();
+  if(!playerName){alert("Please enter your name."); return;}
+  playerSetup.style.display="none";
+  document.getElementById('wheel-container').style.display="block";
+  updateLeaderboard();
+};
+
+spinBtn.onclick = () => {
+  spinSound.play();
+  const deg = Math.floor(3600 + Math.random() * 360);
+  wheel.style.transform = `rotate(${deg}deg)`;
+  spinBtn.disabled = true;
+  setTimeout(() => {
+    const selected = categories[Math.floor(Math.random()*categories.length)];
+    startQuiz(selected);
+  }, 4000);
+};
+
+function startQuiz(category) {
+  questionArea.style.display = "block";
+  const questions = questionPool[category];
+  let qIndex = 0, correct = 0;
+  showQuestion();
+
+  function showQuestion() {
+    if (qIndex >= 3) { endGame(); return; }
+    questionText.textContent = `(${category}) ${questions[qIndex].q}`;
+    optionsDiv.innerHTML = "";
+    const options = shuffle(["Yes","No","Suspicious links","Personal information","Secure connection","Mix of letters, numbers, and symbols","Human psychology","Updated antivirus","Tool to store and manage passwords","Pretexting","Browser security settings"]);
+    options.forEach(opt=>{
+      const btn=document.createElement('button');
+      btn.textContent=opt;
+      btn.className="option";
+      btn.onclick=()=>{
+        if(opt===questions[qIndex].a) correct++;
+        qIndex++;
+        showQuestion();
+      };
+      optionsDiv.appendChild(btn);
+    });
+    startTimer();
+  }
+
+  function startTimer(){
+    clearInterval(countdown);
+    timeLeft=20;
+    timerDisplay.textContent=`⏳ ${timeLeft}s remaining`;
+    countdown=setInterval(()=>{
+      timeLeft--;
+      timerDisplay.textContent=`⏳ ${timeLeft}s remaining`;
+      if(timeLeft<=0){ clearInterval(countdown); endGame(); }
+    },1000);
+  }
+
+  function endGame(){
+    clearInterval(countdown);
+    questionArea.style.display="none";
+    if(correct>=3){
+      winGame();
+    } else if(!retry){
+      retry=true;
+      buzzerSound.play();
+      result.innerHTML="❌ Sorry, try again in 5 seconds...";
+      setTimeout(()=>{ result.innerHTML=""; questionArea.style.display="none"; spinBtn.disabled=false; },5000);
+    } else {
+      buzzerSound.play();
+      result.innerHTML="😢 Game Over!";
+      setTimeout(()=>location.reload(),5000);
+    }
+  }
+}
+
+function winGame(){
+  applauseSound.play();
+  result.innerHTML="🎉 Good job, " + playerName + "! Claim your prize below.";
+  badge.style.display="block";
+  updateLeaderboard(playerName);
+  setTimeout(()=>location.reload(),20000);
+}
+
+function shuffle(arr){return arr.sort(()=>Math.random()-0.5);}
+
+function updateLeaderboard(name=""){
+  let scores=JSON.parse(localStorage.getItem('leaderboard')||"[]");
+  if(name){ scores.push(name); localStorage.setItem('leaderboard',JSON.stringify(scores)); }
+  leaderboardList.innerHTML=scores.map((n,i)=>`<li>${i+1}. ${n}</li>`).join('');
+}
+</script>
 </body>
 </html>
