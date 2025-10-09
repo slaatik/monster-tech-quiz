@@ -1,226 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Cybersecurity Phishing Awareness Game</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Wheel Game</title>
 <style>
   body {
-    font-family: "Segoe UI", sans-serif;
-    background: radial-gradient(circle at top, #001f3f, #000);
-    color: #fff;
+    font-family: Arial, sans-serif;
     text-align: center;
-    overflow: hidden;
+    background: #f0f0f0;
+    padding: 20px;
   }
-  h1 { margin-top: 10px; font-size: 1.8rem; }
-  #wheel-container { position: relative; margin: 40px auto; width: 300px; height: 300px; }
   #wheel {
-    width: 100%; height: 100%; border-radius: 50%;
-    border: 10px solid #fff; background: conic-gradient(
-      #ff4136 0deg 60deg, #0074D9 60deg 120deg, #2ECC40 120deg 180deg,
-      #FF851B 180deg 240deg, #B10DC9 240deg 300deg, #39CCCC 300deg 360deg);
-    transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 10px solid #333;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    transform: rotate(0deg);
+    transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+  .segment {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    background: #ffcc00;
+    transform-origin: 100% 100%;
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
   }
   #pointer {
-    position: absolute; top: -20px; left: 50%;
-    transform: translateX(-50%);
-    width: 0; height: 0;
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-bottom: 30px solid yellow;
-    animation: pulse 1.5s infinite;
+    width: 0; 
+    height: 0; 
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 40px solid red;
+    margin: 20px auto;
   }
-  @keyframes pulse { 0%,100%{transform:translateX(-50%) scale(1);} 50%{transform:translateX(-50%) scale(1.2);} }
-
-  #spin-btn {
-    padding: 10px 20px; font-size: 1.2rem; border: none; border-radius: 10px;
-    background: #39CCCC; color: #000; cursor: pointer;
+  #countdown {
+    font-size: 24px;
+    margin: 10px;
   }
-  #question-area { margin-top: 30px; display: none; }
-  .question { margin: 10px auto; width: 80%; }
-  .option { display: block; margin: 5px auto; padding: 8px; width: 60%; border-radius: 8px; cursor: pointer; border: 1px solid #ccc; background: #111; color: #fff; }
-  .option:hover { background: #222; }
-  #timer { font-size: 1.5rem; margin-top: 10px; }
-  #result { font-size: 1.5rem; margin-top: 20px; }
-  #badge { display: none; margin: 20px auto; width: 200px; animation: bounce 2s infinite; }
-  @keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
-  #leaderboard { margin-top: 20px; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 10px; width: 300px; margin-left:auto; margin-right:auto; }
-  #leaderboard h2 { font-size: 1.2rem; margin-bottom: 5px; }
-  #leaderboard ul { list-style: none; padding: 0; margin: 0; }
-  #leaderboard li { font-size: 1rem; padding: 2px 0; }
-  input[type="text"] { padding: 8px; border-radius: 5px; border: none; width: 200px; }
+  #message {
+    font-size: 20px;
+    margin: 10px;
+  }
+  #leaderboard {
+    margin-top: 20px;
+  }
+  #badge {
+    width: 100px;
+    display: none;
+    margin-top: 20px;
+  }
 </style>
 </head>
 <body>
-<h1>🎣 Cybersecurity Phishing Awareness Game</h1>
+
+<h1>Quiz Wheel Game</h1>
+
+<div id="pointer"></div>
+<div id="wheel">
+  <div class="segment" style="transform: rotate(0deg); background:#ff6666"></div>
+  <div class="segment" style="transform: rotate(60deg); background:#66ff66"></div>
+  <div class="segment" style="transform: rotate(120deg); background:#6666ff"></div>
+  <div class="segment" style="transform: rotate(180deg); background:#ff66ff"></div>
+  <div class="segment" style="transform: rotate(240deg); background:#66ffff"></div>
+  <div class="segment" style="transform: rotate(300deg); background:#ffff66"></div>
+</div>
+
+<div id="countdown">20</div>
+<div id="message"></div>
+
 <div id="leaderboard">
-  <h2>🏆 Leaderboard</h2>
-  <ul id="leaderboard-list"></ul>
-</div>
-<div id="player-setup">
-  <p>Enter your name before spinning:</p>
-  <input type="text" id="player-name" placeholder="Your name" />
-  <button id="start-btn">Start</button>
+  <h3>Leaderboard</h3>
+  <ol id="scores"></ol>
 </div>
 
-<div id="wheel-container" style="display:none;">
-  <div id="pointer"></div>
-  <div id="wheel"></div>
-  <button id="spin-btn">🎡 Spin</button>
-</div>
+<img id="badge" src="badge.png" alt="Badge">
 
-<div id="question-area">
-  <div id="timer"></div>
-  <div id="question-text"></div>
-  <div id="options"></div>
-</div>
-
-<div id="result"></div>
-<img id="badge" src="badge.png" alt="Winner Badge" />
-
-<!-- Audio -->
-<audio id="spin-sound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
-<audio id="applause-sound" src="https://actions.google.com/sounds/v1/crowds/applause.ogg"></audio>
-<audio id="buzzer-sound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
+<audio id="applause" src="https://www.soundjay.com/human/applause-8.mp3"></audio>
+<audio id="buzzer" src="https://www.soundjay.com/button/beep-07.mp3"></audio>
 
 <script>
 const wheel = document.getElementById('wheel');
-const spinBtn = document.getElementById('spin-btn');
-const questionArea = document.getElementById('question-area');
-const questionText = document.getElementById('question-text');
-const optionsDiv = document.getElementById('options');
-const timerDisplay = document.getElementById('timer');
-const result = document.getElementById('result');
+const countdownEl = document.getElementById('countdown');
+const messageEl = document.getElementById('message');
+const scoresEl = document.getElementById('scores');
 const badge = document.getElementById('badge');
-const playerSetup = document.getElementById('player-setup');
-const startBtn = document.getElementById('start-btn');
-const playerNameInput = document.getElementById('player-name');
-const leaderboardList = document.getElementById('leaderboard-list');
-let playerName = "";
-let retry = false;
-let countdown, timeLeft = 20;
+const applause = document.getElementById('applause');
+const buzzer = document.getElementById('buzzer');
 
-const spinSound = document.getElementById('spin-sound');
-const applauseSound = document.getElementById('applause-sound');
-const buzzerSound = document.getElementById('buzzer-sound');
+let playerName = prompt("Enter your name before spinning:");
+let score = 0;
 
-const categories = ["Phishing Emails", "Passwords", "Social Engineering", "Safe Browsing", "Malware"];
-const questionPool = {
-  "Phishing Emails": [
-    { q: "What is a common sign of a phishing email?", a: "Suspicious links" },
-    { q: "Phishing emails often ask for?", a: "Personal information" },
-    { q: "Should you click links from unknown senders?", a: "No" }
-  ],
-  "Passwords": [
-    { q: "What makes a strong password?", a: "Mix of letters, numbers, and symbols" },
-    { q: "Should you reuse passwords?", a: "No" },
-    { q: "What is a password manager?", a: "Tool to store and manage passwords" }
-  ],
-  "Social Engineering": [
-    { q: "Social engineering manipulates what?", a: "Human psychology" },
-    { q: "A scammer pretending to be IT is an example of?", a: "Pretexting" },
-    { q: "Should you share credentials with coworkers?", a: "No" }
-  ],
-  "Safe Browsing": [
-    { q: "What does HTTPS mean?", a: "Secure connection" },
-    { q: "Should you download from unknown sites?", a: "No" },
-    { q: "What helps block malicious sites?", a: "Browser security settings" }
-  ],
-  "Malware": [
-    { q: "Malware stands for?", a: "Malicious software" },
-    { q: "A virus spreads by?", a: "Infecting files" },
-    { q: "Best defense against malware?", a: "Updated antivirus" }
-  ]
-};
+let countdown = 20;
+let countdownInterval;
+let canSpin = true;
 
-startBtn.onclick = () => {
-  playerName = playerNameInput.value.trim();
-  if(!playerName){alert("Please enter your name."); return;}
-  playerSetup.style.display="none";
-  document.getElementById('wheel-container').style.display="block";
-  updateLeaderboard();
-};
-
-spinBtn.onclick = () => {
-  spinSound.play();
-  const deg = Math.floor(3600 + Math.random() * 360);
-  wheel.style.transform = `rotate(${deg}deg)`;
-  spinBtn.disabled = true;
-  setTimeout(() => {
-    const selected = categories[Math.floor(Math.random()*categories.length)];
-    startQuiz(selected);
-  }, 4000);
-};
-
-function startQuiz(category) {
-  questionArea.style.display = "block";
-  const questions = questionPool[category];
-  let qIndex = 0, correct = 0;
-  showQuestion();
-
-  function showQuestion() {
-    if (qIndex >= 3) { endGame(); return; }
-    questionText.textContent = `(${category}) ${questions[qIndex].q}`;
-    optionsDiv.innerHTML = "";
-    const options = shuffle(["Yes","No","Suspicious links","Personal information","Secure connection","Mix of letters, numbers, and symbols","Human psychology","Updated antivirus","Tool to store and manage passwords","Pretexting","Browser security settings"]);
-    options.forEach(opt=>{
-      const btn=document.createElement('button');
-      btn.textContent=opt;
-      btn.className="option";
-      btn.onclick=()=>{
-        if(opt===questions[qIndex].a) correct++;
-        qIndex++;
-        showQuestion();
-      };
-      optionsDiv.appendChild(btn);
-    });
-    startTimer();
-  }
-
-  function startTimer(){
-    clearInterval(countdown);
-    timeLeft=20;
-    timerDisplay.textContent=`⏳ ${timeLeft}s remaining`;
-    countdown=setInterval(()=>{
-      timeLeft--;
-      timerDisplay.textContent=`⏳ ${timeLeft}s remaining`;
-      if(timeLeft<=0){ clearInterval(countdown); endGame(); }
-    },1000);
-  }
-
-  function endGame(){
-    clearInterval(countdown);
-    questionArea.style.display="none";
-    if(correct>=3){
-      winGame();
-    } else if(!retry){
-      retry=true;
-      buzzerSound.play();
-      result.innerHTML="❌ Sorry, try again in 5 seconds...";
-      setTimeout(()=>{ result.innerHTML=""; questionArea.style.display="none"; spinBtn.disabled=false; },5000);
-    } else {
-      buzzerSound.play();
-      result.innerHTML="😢 Game Over!";
-      setTimeout(()=>location.reload(),5000);
+function startCountdown() {
+  countdown = 20;
+  countdownEl.textContent = countdown;
+  countdownInterval = setInterval(() => {
+    countdown--;
+    countdownEl.textContent = countdown;
+    if(countdown <= 0){
+      clearInterval(countdownInterval);
+      endGame(false);
     }
+  }, 1000);
+}
+
+function spinWheel() {
+  if(!canSpin) return;
+  canSpin = false;
+  messageEl.textContent = "";
+
+  startCountdown();
+
+  let spins = Math.floor(Math.random() * 360) + 720; // random spin + 2 full rotations
+  wheel.style.transform = `rotate(${spins}deg)`;
+
+  setTimeout(() => {
+    clearInterval(countdownInterval);
+    let result = Math.floor((spins % 360) / 60); // 6 segments
+    let win = result === 0; // example: first segment = win
+    endGame(win);
+  }, 5000); // match wheel animation
+}
+
+function endGame(win) {
+  if(win) {
+    messageEl.textContent = "You won!";
+    applause.play();
+    badge.style.display = "block";
+    score++;
+  } else {
+    messageEl.textContent = "You lost! Retry in 5 seconds...";
+    buzzer.play();
+    setTimeout(() => {
+      messageEl.textContent = "";
+      canSpin = true;
+      badge.style.display = "none";
+    }, 5000);
   }
+  updateLeaderboard();
+  setTimeout(() => location.reload(), 20000);
 }
 
-function winGame(){
-  applauseSound.play();
-  result.innerHTML="🎉 Good job, " + playerName + "! Claim your prize below.";
-  badge.style.display="block";
-  updateLeaderboard(playerName);
-  setTimeout(()=>location.reload(),20000);
+function updateLeaderboard() {
+  let li = document.createElement('li');
+  li.textContent = `${playerName}: ${score}`;
+  scoresEl.appendChild(li);
 }
 
-function shuffle(arr){return arr.sort(()=>Math.random()-0.5);}
-
-function updateLeaderboard(name=""){
-  let scores=JSON.parse(localStorage.getItem('leaderboard')||"[]");
-  if(name){ scores.push(name); localStorage.setItem('leaderboard',JSON.stringify(scores)); }
-  leaderboardList.innerHTML=scores.map((n,i)=>`<li>${i+1}. ${n}</li>`).join('');
-}
+// Spin wheel on click
+wheel.addEventListener('click', spinWheel);
 </script>
+
 </body>
 </html>
