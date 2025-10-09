@@ -1,26 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cybersecurity Phishing Awareness Wheel</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Phishing Awareness Spin Wheel</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>🎡 Cybersecurity Phishing Awareness</h1>
-  <p class="subtitle">Spin the wheel and test your knowledge!</p>
+  <main>
+    <h1>🎡 Phishing Awareness Spin Wheel</h1>
+    <p class="subtitle">Spin, answer three questions, and win a Cybersecurity Badge!</p>
 
-  <div class="wheel-container">
-    <canvas id="wheel" width="400" height="400"></canvas>
-    <button id="spinBtn">SPIN</button>
-  </div>
-
-  <div id="questionModal" class="modal hidden">
-    <div class="modal-content">
-      <h2 id="categoryTitle"></h2>
-      <div id="questionContainer"></div>
+    <div class="game-area">
+      <div class="wheel-wrapper">
+        <div id="pointer" class="pointer">▼</div>
+        <canvas id="wheel" width="420" height="420"></canvas>
+        <button id="spinBtn" class="big">SPIN</button>
+        <div id="retryInfo" class="retry-info hidden">Retries left: <span id="retriesLeft">1</span></div>
+      </div>
     </div>
-  </div>
+
+    <div id="questionModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-content">
+        <h2 id="categoryTitle"></h2>
+        <div id="questionContainer"></div>
+        <div id="modalMessage" class="modal-message"></div>
+        <div class="modal-actions">
+          <button id="retryBtn" class="option hidden">Retry</button>
+          <button id="closeBtn" class="option hidden">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="badgeModal" class="badge-modal hidden">
+      <div class="badge-content">
+        <img id="badgeImg" alt="Winner Badge" />
+        <h2>🎉 Congratulations!</h2>
+        <p>You earned your Cybersecurity Badge — claim your prize!</p>
+        <button id="claimBtn" class="big">Claim Prize</button>
+      </div>
+    </div>
+
+    <footer>
+      <small>Built for campus phishing awareness events • Bring this to the table with a QR code for players</small>
+    </footer>
+  </main>
 
   <script src="questions.js"></script>
   <script src="script.js"></script>
