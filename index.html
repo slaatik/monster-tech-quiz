@@ -1,50 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Phishing Awareness Spin Wheel</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cybersecurity Phishing Awareness Wheel</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main>
-    <h1>🎡 Phishing Awareness Spin Wheel</h1>
-    <p class="subtitle">Spin, answer three questions, and win a Cybersecurity Badge!</p>
+  <h1>🎡 Cybersecurity Phishing Awareness</h1>
+  <p class="subtitle">Spin the wheel, test your skills, and earn your SPC Tigernaut Badge!</p>
 
-    <div class="game-area">
-      <div class="wheel-wrapper">
-        <div id="pointer" class="pointer">▼</div>
-        <canvas id="wheel" width="420" height="420"></canvas>
-        <button id="spinBtn" class="big">SPIN</button>
-        <div id="retryInfo" class="retry-info hidden">Retries left: <span id="retriesLeft">1</span></div>
-      </div>
+  <div id="leaderboard">
+    <h3>🏆 Leaderboard</h3>
+    <ul id="leaderboardList"></ul>
+  </div>
+
+  <div class="wheel-container">
+    <div class="pointer"></div>
+    <canvas id="wheel" width="400" height="400"></canvas>
+    <button id="spinBtn">SPIN</button>
+  </div>
+
+  <div id="questionModal" class="modal hidden">
+    <div class="modal-content">
+      <h2 id="categoryTitle"></h2>
+      <div id="questionContainer"></div>
     </div>
+  </div>
 
-    <div id="questionModal" class="modal hidden" aria-hidden="true">
-      <div class="modal-content">
-        <h2 id="categoryTitle"></h2>
-        <div id="questionContainer"></div>
-        <div id="modalMessage" class="modal-message"></div>
-        <div class="modal-actions">
-          <button id="retryBtn" class="option hidden">Retry</button>
-          <button id="closeBtn" class="option hidden">Close</button>
-        </div>
-      </div>
+  <div id="badgeModal" class="modal hidden">
+    <div class="modal-content badge-content">
+      <img id="badgeImage" src="assets/badge.png" alt="Cybersecurity Badge" />
+      <h2>🎉 Congratulations! 🎉</h2>
+      <p>You earned your Cybersecurity Badge! Claim your prize!</p>
     </div>
-
-    <div id="badgeModal" class="badge-modal hidden">
-      <div class="badge-content">
-        <img id="badgeImg" alt="Winner Badge" />
-        <h2>🎉 Congratulations!</h2>
-        <p>You earned your Cybersecurity Badge — claim your prize!</p>
-        <button id="claimBtn" class="big">Claim Prize</button>
-      </div>
-    </div>
-
-    <footer>
-      <small>Built for campus phishing awareness events • Bring this to the table with a QR code for players</small>
-    </footer>
-  </main>
+  </div>
 
   <script src="questions.js"></script>
   <script src="script.js"></script>
